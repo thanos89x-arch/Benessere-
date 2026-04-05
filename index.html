@@ -8,20 +8,18 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-height:100vh;overflow-x:hidden}
-
 .screen{display:none;min-height:100vh;flex-direction:column}
 .screen.active{display:flex;animation:fadeIn .35s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── SETUP SCREEN ── */
+/* SETUP */
 #setup{background:#FAF7F2;justify-content:center;align-items:center;padding:36px 28px}
-.setup-inner{width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;gap:0}
+.setup-inner{width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center}
 .setup-leaf{font-size:52px;margin-bottom:22px;display:block;animation:float 3s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .setup-title{font-family:'Playfair Display',serif;font-size:28px;color:#1C1C1E;text-align:center;line-height:1.25;margin-bottom:8px}
 .setup-title em{color:#4A6B47;font-style:italic}
 .setup-sub{font-size:13px;color:#8A8A8A;text-align:center;line-height:1.6;margin-bottom:32px;font-weight:300}
-
 .setup-card{background:white;border-radius:24px;padding:26px 22px;width:100%;box-shadow:0 8px 32px rgba(74,107,71,0.10);border:1.5px solid rgba(125,155,118,.18)}
 .setup-card-label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:#7D9B76;font-weight:600;margin-bottom:10px}
 .setup-card-desc{font-size:12.5px;color:#8A8A8A;line-height:1.6;margin-bottom:18px;font-weight:300}
@@ -31,39 +29,31 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
 #api-key-input{flex:1;border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:13.5px;color:#1C1C1E;font-weight:400;min-width:0;letter-spacing:.3px}
 #api-key-input::placeholder{color:#BBBBBB;font-size:13px}
 .toggle-vis{background:none;border:none;cursor:pointer;color:#AAAAAA;font-size:14px;padding:2px;flex-shrink:0;line-height:1}
-
-.setup-btn{margin-top:16px;width:100%;background:linear-gradient(135deg,#4A6B47 0%,#7D9B76 100%);color:white;border:none;border-radius:16px;padding:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:opacity .2s,transform .15s;letter-spacing:.2px}
+.setup-btn{margin-top:16px;width:100%;background:linear-gradient(135deg,#4A6B47 0%,#7D9B76 100%);color:white;border:none;border-radius:16px;padding:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:opacity .2s,transform .15s}
 .setup-btn:active{transform:scale(.97);opacity:.9}
-.setup-error{font-size:12px;color:#C0392B;text-align:center;margin-top:10px;min-height:16px;font-weight:400}
-
+.setup-error{font-size:12px;color:#C0392B;text-align:center;margin-top:10px;min-height:16px}
 .setup-hint{margin-top:24px;text-align:center}
 .setup-hint a{font-size:12px;color:#7D9B76;text-decoration:none;border-bottom:1px solid rgba(125,155,118,.4)}
 .privacy-note{margin-top:14px;font-size:11px;color:#AAAAAA;text-align:center;line-height:1.5;font-weight:300}
-.privacy-note span{font-size:13px;vertical-align:middle;margin-right:4px}
 
-/* ── HOME ── */
+/* HOME */
 .home-header{padding:52px 28px 24px;position:relative}
 .home-header::before{content:'';position:absolute;top:-40px;right:-30px;width:200px;height:200px;background:radial-gradient(circle,rgba(168,196,162,0.2) 0%,transparent 70%);border-radius:50%;pointer-events:none}
 .greeting-sub{font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#7D9B76;margin-bottom:10px}
 .greeting-title{font-family:'Playfair Display',serif;font-size:34px;line-height:1.2;color:#1C1C1E}
 .greeting-title em{font-style:italic;color:#4A6B47}
 .home-date{font-size:12px;color:#8A8A8A;margin-top:8px;font-weight:300}
-
 .home-top-actions{display:flex;justify-content:flex-end;padding:0 22px;margin-top:-10px;margin-bottom:4px}
 .settings-btn{background:none;border:none;cursor:pointer;font-size:20px;opacity:.35;padding:6px;transition:opacity .2s}
 .settings-btn:active{opacity:.7}
-
 .banner{margin:0 20px 28px;background:linear-gradient(135deg,#4A6B47 0%,#7D9B76 100%);border-radius:22px;padding:26px 24px;color:white;position:relative;overflow:hidden}
 .banner::after{content:'✦';position:absolute;right:22px;top:18px;font-size:40px;opacity:.1}
 .banner::before{content:'';position:absolute;bottom:-30px;left:-20px;width:120px;height:120px;background:rgba(255,255,255,.05);border-radius:50%}
 .banner-label{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;opacity:.7;margin-bottom:10px;font-weight:500}
 .banner-title{font-family:'Playfair Display',serif;font-size:22px;line-height:1.3;margin-bottom:6px}
 .banner-sub{font-size:13px;opacity:.65;font-weight:300;line-height:1.5}
-
 .section-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#8A8A8A;font-weight:600;padding:0 28px;margin-bottom:18px}
-
 .specialists-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 20px 40px}
-
 .card{background:white;border-radius:20px;padding:20px 16px 18px;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease;box-shadow:0 4px 20px rgba(28,28,30,0.07);border:1.5px solid transparent;position:relative;overflow:hidden}
 .card:active{transform:scale(.96)}
 .card.featured{grid-column:1/-1;display:flex;align-items:center;gap:16px;padding:20px 22px;border-color:rgba(125,155,118,.25)}
@@ -75,7 +65,7 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
 .card-arrow{font-size:20px;color:#8A8A8A;opacity:.3;flex-shrink:0}
 .card:not(.featured) .card-arrow{position:absolute;right:14px;top:14px;font-size:14px}
 
-/* ── CHAT ── */
+/* CHAT */
 #chat{background:#FAF7F2}
 .chat-header{background:white;padding:16px 18px 14px;display:flex;align-items:center;gap:13px;box-shadow:0 1px 0 rgba(28,28,30,.07);position:sticky;top:0;z-index:10}
 .back-btn{width:38px;height:38px;border-radius:50%;background:#F5EFE6;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:background .15s}
@@ -85,36 +75,43 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
 .chat-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;line-height:1.1;color:#1C1C1E}
 .chat-status{font-size:11px;color:#7D9B76;font-weight:500;display:flex;align-items:center;gap:5px;margin-top:2px}
 .status-dot{width:6px;height:6px;background:#7D9B76;border-radius:50%;display:inline-block}
-
 .messages{flex:1;overflow-y:auto;padding:18px 14px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
-
 .welcome{text-align:center;padding:28px 20px 12px}
 .welcome-emoji{font-size:44px;display:block;margin-bottom:12px}
 .welcome-name{font-family:'Playfair Display',serif;font-size:21px;font-weight:600;color:#1C1C1E;margin-bottom:8px}
 .welcome-desc{font-size:13px;color:#8A8A8A;line-height:1.6;max-width:260px;margin:0 auto}
-
 .msg{max-width:84%}
 .msg.user{align-self:flex-end}
 .msg.assistant{align-self:flex-start}
 .bubble{padding:12px 16px;border-radius:20px;font-size:14.5px;line-height:1.6;font-weight:300}
 .msg.user .bubble{background:#4A6B47;color:white;border-bottom-right-radius:5px}
 .msg.assistant .bubble{background:white;color:#1C1C1E;border-bottom-left-radius:5px;box-shadow:0 3px 16px rgba(28,28,30,0.08)}
+.bubble img{max-width:180px;border-radius:10px;display:block;margin-bottom:6px}
 .msg-time{font-size:10px;color:#8A8A8A;margin-top:4px;padding:0 4px}
 .msg.user .msg-time{text-align:right}
-
 .typing{align-self:flex-start;background:white;border-radius:20px;border-bottom-left-radius:5px;padding:15px 18px;box-shadow:0 3px 16px rgba(28,28,30,0.08);display:none;gap:5px;align-items:center}
 .typing.show{display:flex}
 .dot{width:7px;height:7px;background:#8A8A8A;border-radius:50%;animation:bounce .9s ease infinite}
 .dot:nth-child(2){animation-delay:.15s}
 .dot:nth-child(3){animation-delay:.3s}
 @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
-
 .suggestions{display:flex;gap:8px;overflow-x:auto;padding:10px 14px;scrollbar-width:none;flex-shrink:0}
 .suggestions::-webkit-scrollbar{display:none}
 .chip{flex-shrink:0;background:white;border:1.5px solid rgba(125,155,118,.35);border-radius:20px;padding:8px 14px;font-size:12.5px;color:#4A6B47;cursor:pointer;font-weight:500;white-space:nowrap;transition:all .15s;font-family:'DM Sans',sans-serif}
 .chip:active{background:#4A6B47;color:white;border-color:#4A6B47}
 
-.input-area{padding:10px 14px 28px;background:#FAF7F2;display:flex;gap:10px;align-items:flex-end;flex-shrink:0}
+/* PHOTO PREVIEW BAR */
+.photo-preview-bar{display:none;padding:8px 14px 4px;align-items:center;gap:12px;background:#FAF7F2;flex-shrink:0}
+.photo-preview-bar.show{display:flex}
+.photo-thumb{position:relative;display:inline-block}
+.photo-thumb img{width:64px;height:64px;object-fit:cover;border-radius:12px;border:2px solid #7D9B76;display:block}
+.photo-remove{position:absolute;top:-7px;right:-7px;width:22px;height:22px;border-radius:50%;background:#C0392B;color:white;border:2px solid white;font-size:13px;cursor:pointer;line-height:18px;text-align:center;font-weight:700}
+.photo-label{font-size:12px;color:#7D9B76;font-weight:500}
+
+/* INPUT */
+.input-area{padding:8px 14px 28px;background:#FAF7F2;display:flex;gap:10px;align-items:flex-end;flex-shrink:0}
+.photo-btn{width:44px;height:44px;border-radius:50%;background:white;border:1.5px solid rgba(125,155,118,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:all .15s}
+.photo-btn:active{background:#EBF3E8;border-color:#7D9B76}
 .input-wrap{flex:1;background:white;border-radius:24px;border:1.5px solid rgba(28,28,30,.1);display:flex;align-items:flex-end;padding:10px 16px;box-shadow:0 2px 10px rgba(0,0,0,.05);transition:border-color .15s}
 .input-wrap:focus-within{border-color:#7D9B76}
 #msg-input{flex:1;border:none;outline:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:15px;color:#1C1C1E;resize:none;max-height:100px;font-weight:300;line-height:1.4}
@@ -123,7 +120,7 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
 .send-btn:active{transform:scale(.92);background:#7D9B76}
 .send-btn:disabled{background:#AAAAAA;cursor:not-allowed}
 
-/* ── CHANGE KEY MODAL ── */
+/* MODALS */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,28,30,.5);z-index:100;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
 .modal-overlay.show{display:flex;animation:fadeIn .2s ease}
 .modal-sheet{background:#FAF7F2;border-radius:28px 28px 0 0;padding:28px 24px 44px;width:100%;max-width:480px}
@@ -133,6 +130,10 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
 .modal-actions{display:flex;gap:10px;margin-top:16px}
 .modal-cancel{flex:1;background:#F0EBE3;border:none;border-radius:14px;padding:14px;font-family:'DM Sans',sans-serif;font-size:14px;color:#8A8A8A;cursor:pointer;font-weight:500}
 .modal-save{flex:2;background:linear-gradient(135deg,#4A6B47,#7D9B76);border:none;border-radius:14px;padding:14px;font-family:'DM Sans',sans-serif;font-size:14px;color:white;cursor:pointer;font-weight:500}
+.source-options{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.source-btn{background:white;border:1.5px solid rgba(125,155,118,.3);border-radius:16px;padding:16px 20px;font-family:'DM Sans',sans-serif;font-size:15px;color:#1C1C1E;cursor:pointer;display:flex;align-items:center;gap:14px;font-weight:400;transition:background .15s;text-align:left}
+.source-btn:active{background:#EBF3E8}
+.source-btn-icon{font-size:26px;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -143,23 +144,19 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
     <span class="setup-leaf">🌿</span>
     <div class="setup-title">Benvenuta,<br><em>cara</em></div>
     <div class="setup-sub">Per attivare i tuoi specialisti personali,<br>inserisci la tua API key Anthropic.</div>
-
     <div class="setup-card">
       <div class="setup-card-label">API Key</div>
       <div class="setup-card-desc">La trovi su console.anthropic.com — inizia con <strong>sk-ant-</strong>. Viene salvata solo sul tuo telefono.</div>
-      <div class="key-input-wrap" id="setup-input-wrap">
+      <div class="key-input-wrap">
         <span class="key-input-icon">🔑</span>
         <input type="password" id="api-key-input" placeholder="sk-ant-api03-..." autocomplete="off" autocorrect="off" spellcheck="false">
-        <button class="toggle-vis" onclick="toggleVis()" id="vis-btn" title="Mostra/nascondi">👁</button>
+        <button class="toggle-vis" onclick="toggleVis()" id="vis-btn">👁</button>
       </div>
       <div class="setup-error" id="setup-error"></div>
       <button class="setup-btn" onclick="saveKey()">Inizia il tuo percorso ✨</button>
     </div>
-
-    <div class="setup-hint">
-      <a href="https://console.anthropic.com/settings/keys" target="_blank">Come ottenere la API key →</a>
-    </div>
-    <div class="privacy-note"><span>🔒</span>La chiave viene salvata solo sul tuo dispositivo e non viene mai condivisa.</div>
+    <div class="setup-hint"><a href="https://console.anthropic.com/settings/keys" target="_blank">Come ottenere la API key</a></div>
+    <div class="privacy-note"><span>🔒</span>La chiave viene salvata solo sul tuo dispositivo.</div>
   </div>
 </div>
 
@@ -170,19 +167,15 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
     <div class="greeting-title">Ciao, <em>cara</em> 🌿</div>
     <div class="home-date" id="home-date"></div>
   </div>
-
   <div class="home-top-actions">
-    <button class="settings-btn" onclick="openKeyModal()" title="Cambia API key">⚙️</button>
+    <button class="settings-btn" onclick="openKeyModal()">⚙️</button>
   </div>
-
   <div class="banner">
     <div class="banner-label">Consiglio del giorno</div>
     <div class="banner-title">Prenditi cura di te</div>
     <div class="banner-sub">I tuoi specialisti personali ti aspettano sempre</div>
   </div>
-
   <div class="section-label">I tuoi specialisti</div>
-
   <div class="specialists-grid">
     <div class="card featured" onclick="openChat('nutrizionista')">
       <div class="card-icon" style="background:#EBF3E8">🥗</div>
@@ -228,7 +221,7 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
       <div class="chat-name" id="chat-name"></div>
       <div class="chat-status"><span class="status-dot"></span>Disponibile ora</div>
     </div>
-    <button class="settings-btn" onclick="openKeyModal()" title="Cambia API key">⚙️</button>
+    <button class="settings-btn" onclick="openKeyModal()">⚙️</button>
   </div>
   <div class="messages" id="messages">
     <div class="typing" id="typing">
@@ -236,7 +229,17 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
     </div>
   </div>
   <div class="suggestions" id="suggestions"></div>
+  <div class="photo-preview-bar" id="photo-preview-bar">
+    <div class="photo-thumb">
+      <img id="photo-preview-img" src="" alt="anteprima">
+      <button class="photo-remove" onclick="removePhoto()">x</button>
+    </div>
+    <span class="photo-label">Foto pronta da inviare</span>
+  </div>
   <div class="input-area">
+    <input type="file" id="photo-gallery" accept="image/*" style="display:none" onchange="handlePhoto(event)">
+    <input type="file" id="photo-camera" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(event)">
+    <button class="photo-btn" onclick="openPhotoModal()">📷</button>
     <div class="input-wrap">
       <textarea id="msg-input" rows="1" placeholder="Scrivi un messaggio..."></textarea>
     </div>
@@ -244,13 +247,13 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
   </div>
 </div>
 
-<!-- CHANGE KEY MODAL -->
+<!-- KEY MODAL -->
 <div class="modal-overlay" id="key-modal" onclick="closeKeyModal(event)">
   <div class="modal-sheet">
     <div class="modal-handle"></div>
     <div class="modal-title">Cambia API Key</div>
     <div class="modal-sub">Inserisci la nuova chiave. Viene salvata solo su questo dispositivo.</div>
-    <div class="key-input-wrap" id="modal-input-wrap">
+    <div class="key-input-wrap">
       <span class="key-input-icon">🔑</span>
       <input type="password" id="modal-key-input" placeholder="sk-ant-api03-..." autocomplete="off" autocorrect="off" spellcheck="false">
       <button class="toggle-vis" onclick="toggleModalVis()" id="modal-vis-btn">👁</button>
@@ -263,30 +266,53 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
   </div>
 </div>
 
-<script>
-const STORAGE_KEY = 'benessere_api_key';
+<!-- PHOTO SOURCE MODAL -->
+<div class="modal-overlay" id="photo-modal" onclick="closePhotoModal(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Allega una foto</div>
+    <div class="modal-sub">Scegli come vuoi aggiungere la foto alla chat.</div>
+    <div class="source-options">
+      <button class="source-btn" onclick="chooseCamera()">
+        <span class="source-btn-icon">📸</span>
+        <div>
+          <div style="font-weight:500;margin-bottom:2px">Scatta una foto</div>
+          <div style="font-size:12px;color:#8A8A8A">Usa la fotocamera</div>
+        </div>
+      </button>
+      <button class="source-btn" onclick="chooseGallery()">
+        <span class="source-btn-icon">🖼️</span>
+        <div>
+          <div style="font-weight:500;margin-bottom:2px">Scegli dalla galleria</div>
+          <div style="font-size:12px;color:#8A8A8A">Seleziona una foto esistente</div>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
 
-const specialists = {
-  nutrizionista:{name:"Nutrizionista",icon:"🥗",color:"#EBF3E8",desc:"Sono qui per guidarti verso una nutrizione equilibrata e uno stile di vita sano.",system:"Sei una nutrizionista gentile, professionale e competente. Parli in italiano, dai consigli pratici e personalizzati su alimentazione, nutrienti, energia e abitudini sane. Sei empatica e incoraggiante.",suggestions:["Cosa mangiare a colazione?","Cibi anti-infiammatori","Come aumentare energia?","Quante proteine al giorno?"]},
-  dietologo:{name:"Dietologa",icon:"⚖️",color:"#F9F1E3",desc:"Creo piani alimentari personalizzati per raggiungere i tuoi obiettivi in modo sano.",system:"Sei una dietologa esperta e comprensiva. Parli in italiano. Fornisci consigli su diete, calorie, macronutrienti e piani alimentari personalizzati. Sei positiva e mai giudicante.",suggestions:["Piano settimanale leggero","Snack sani e gustosi","Come gestire i dolci?","Digiuno intermittente?"]},
-  dermatologo:{name:"Dermatologa",icon:"✨",color:"#FBF0EC",desc:"Ti aiuto a prenderti cura della tua pelle con routine e consigli mirati.",system:"Sei una dermatologa gentile e aggiornata. Parli in italiano. Dai consigli su skincare, routine, ingredienti cosmetici, acne, idratazione e protezione solare.",suggestions:["Routine mattutina?","Come combattere l'acne?","Migliore SPF?","Pelle secca: rimedi"]},
-  tricologo:{name:"Tricologa",icon:"💆",color:"#F7EAE4",desc:"Mi occupo della salute del tuo cuoio capelluto e della bellezza dei tuoi capelli.",system:"Sei una tricologa esperta e premurosa. Parli in italiano. Dai consigli su caduta dei capelli, cuoio capelluto, trattamenti, maschere e prodotti per capelli sani.",suggestions:["Capelli che cadono?","Maschera nutriente fai da te","Shampoo giusto per me?","Come far crescere i capelli?"]},
-  fisioterapista:{name:"Fisioterapista",icon:"🏃",color:"#E8F0E7",desc:"Ti guido per migliorare postura, movimento e ritrovare il benessere fisico.",system:"Sei una fisioterapista esperta e motivante. Parli in italiano. Dai consigli su esercizi, postura, stretching, dolori muscolari e articolari e recupero.",suggestions:["Mal di schiena: aiuto!","Stretching mattutino","Postura al computer?","Esercizi per le spalle"]}
+<script>
+var STORAGE_KEY = 'benessere_api_key';
+var specialists = {
+  nutrizionista:{name:"Nutrizionista",icon:"🥗",color:"#EBF3E8",desc:"Sono qui per guidarti verso una nutrizione equilibrata e uno stile di vita sano.",system:"Sei una nutrizionista gentile, professionale e competente. Parli in italiano. Dai consigli pratici su alimentazione, nutrienti, energia e abitudini sane. Se l'utente invia una foto di cibo o pasti, analizzane il valore nutritivo e dai consigli personalizzati.",suggestions:["Cosa mangiare a colazione?","Cibi anti-infiammatori","Come aumentare energia?","Quante proteine al giorno?"]},
+  dietologo:{name:"Dietologa",icon:"⚖️",color:"#F9F1E3",desc:"Creo piani alimentari personalizzati per raggiungere i tuoi obiettivi in modo sano.",system:"Sei una dietologa esperta e comprensiva. Parli in italiano. Fornisci consigli su diete, calorie, macronutrienti e piani alimentari personalizzati. Se l'utente invia una foto di un pasto, stima calorie e macronutrienti e dai consigli.",suggestions:["Piano settimanale leggero","Snack sani e gustosi","Come gestire i dolci?","Digiuno intermittente?"]},
+  dermatologo:{name:"Dermatologa",icon:"✨",color:"#FBF0EC",desc:"Ti aiuto a prenderti cura della tua pelle con routine e consigli mirati.",system:"Sei una dermatologa gentile e aggiornata. Parli in italiano. Dai consigli su skincare, routine, acne, idratazione e protezione solare. Se l'utente invia una foto della pelle, analizza quello che vedi e dai consigli personalizzati, ricordando sempre che per diagnosi definitive serve una visita dal vivo.",suggestions:["Routine mattutina?","Come combattere l acne?","Migliore SPF?","Pelle secca rimedi"]},
+  tricologo:{name:"Tricologa",icon:"💆",color:"#F7EAE4",desc:"Mi occupo della salute del tuo cuoio capelluto e della bellezza dei tuoi capelli.",system:"Sei una tricologa esperta e premurosa. Parli in italiano. Dai consigli su caduta dei capelli, cuoio capelluto, trattamenti e prodotti. Se l'utente invia una foto dei capelli o del cuoio capelluto, analizza quello che vedi e dai consigli mirati.",suggestions:["Capelli che cadono?","Maschera nutriente fai da te","Shampoo giusto per me?","Come far crescere i capelli?"]},
+  fisioterapista:{name:"Fisioterapista",icon:"🏃",color:"#E8F0E7",desc:"Ti guido per migliorare postura, movimento e ritrovare il benessere fisico.",system:"Sei una fisioterapista esperta e motivante. Parli in italiano. Dai consigli su esercizi, postura, stretching e dolori muscolari. Se l'utente invia una foto della postura o di un'area dolorante, analizza quello che vedi e suggerisci miglioramenti concreti.",suggestions:["Mal di schiena aiuto!","Stretching mattutino","Postura al computer?","Esercizi per le spalle"]}
 };
 
-let current = null;
-let history = {};
-let loading = false;
-let apiKey = '';
+var current = null;
+var chatHistory = {};
+var loading = false;
+var apiKey = '';
+var pendingPhoto = null; // {base64, mime, dataUrl}
 
-// ── INIT ──
 (function init(){
-  const saved = localStorage.getItem(STORAGE_KEY);
+  var saved = localStorage.getItem(STORAGE_KEY);
   if(saved && saved.startsWith('sk-ant-')){
     apiKey = saved;
     showHome();
   }
-  // else: setup screen is already active
 })();
 
 function showHome(){
@@ -295,153 +321,179 @@ function showHome(){
   document.getElementById('home-date').textContent = new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
 }
 
-// ── SETUP ──
 function toggleVis(){
-  const inp = document.getElementById('api-key-input');
-  const btn = document.getElementById('vis-btn');
-  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';}
-  else{inp.type='password';btn.textContent='👁';}
+  var i=document.getElementById('api-key-input'),b=document.getElementById('vis-btn');
+  i.type=i.type==='password'?'text':'password';b.textContent=i.type==='password'?'👁':'🙈';
 }
-
 function saveKey(){
-  const val = document.getElementById('api-key-input').value.trim();
-  const err = document.getElementById('setup-error');
+  var val=document.getElementById('api-key-input').value.trim(),err=document.getElementById('setup-error');
   if(!val){err.textContent='Inserisci la API key.';return;}
   if(!val.startsWith('sk-ant-')){err.textContent='La chiave deve iniziare con sk-ant-';return;}
-  err.textContent='';
-  apiKey = val;
-  localStorage.setItem(STORAGE_KEY, val);
-  showHome();
+  err.textContent='';apiKey=val;localStorage.setItem(STORAGE_KEY,val);showHome();
 }
+document.getElementById('api-key-input').addEventListener('keydown',function(e){if(e.key==='Enter')saveKey();});
 
-document.getElementById('api-key-input').addEventListener('keydown',e=>{if(e.key==='Enter')saveKey();});
-
-// ── CHANGE KEY MODAL ──
 function openKeyModal(){
   document.getElementById('modal-key-input').value='';
   document.getElementById('modal-error').textContent='';
   document.getElementById('key-modal').classList.add('show');
 }
 function closeKeyModal(e){
-  if(!e || e.target===document.getElementById('key-modal'))
+  if(!e||e.target===document.getElementById('key-modal'))
     document.getElementById('key-modal').classList.remove('show');
 }
 function toggleModalVis(){
-  const inp = document.getElementById('modal-key-input');
-  const btn = document.getElementById('modal-vis-btn');
-  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';}
-  else{inp.type='password';btn.textContent='👁';}
+  var i=document.getElementById('modal-key-input'),b=document.getElementById('modal-vis-btn');
+  i.type=i.type==='password'?'text':'password';b.textContent=i.type==='password'?'👁':'🙈';
 }
 function saveModalKey(){
-  const val = document.getElementById('modal-key-input').value.trim();
-  const err = document.getElementById('modal-error');
+  var val=document.getElementById('modal-key-input').value.trim(),err=document.getElementById('modal-error');
   if(!val){err.textContent='Inserisci la nuova chiave.';return;}
   if(!val.startsWith('sk-ant-')){err.textContent='La chiave deve iniziare con sk-ant-';return;}
-  err.textContent='';
-  apiKey = val;
-  localStorage.setItem(STORAGE_KEY, val);
+  err.textContent='';apiKey=val;localStorage.setItem(STORAGE_KEY,val);
   document.getElementById('key-modal').classList.remove('show');
 }
 
-// ── CHAT ──
+function openPhotoModal(){document.getElementById('photo-modal').classList.add('show');}
+function closePhotoModal(e){
+  if(!e||e.target===document.getElementById('photo-modal'))
+    document.getElementById('photo-modal').classList.remove('show');
+}
+function chooseCamera(){document.getElementById('photo-modal').classList.remove('show');document.getElementById('photo-camera').click();}
+function chooseGallery(){document.getElementById('photo-modal').classList.remove('show');document.getElementById('photo-gallery').click();}
+
+function handlePhoto(event){
+  var file=event.target.files[0];
+  event.target.value='';
+  if(!file)return;
+  var mime=file.type||'image/jpeg';
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var dataUrl=e.target.result;
+    pendingPhoto={base64:dataUrl.split(',')[1],mime:mime,dataUrl:dataUrl};
+    document.getElementById('photo-preview-img').src=dataUrl;
+    document.getElementById('photo-preview-bar').classList.add('show');
+  };
+  reader.readAsDataURL(file);
+}
+function removePhoto(){
+  pendingPhoto=null;
+  document.getElementById('photo-preview-img').src='';
+  document.getElementById('photo-preview-bar').classList.remove('show');
+}
+
 function openChat(key){
-  current = key;
-  if(!history[key]) history[key]=[];
-  const sp = specialists[key];
-  document.getElementById('chat-icon').textContent = sp.icon;
-  document.getElementById('chat-icon').style.background = sp.color;
-  document.getElementById('chat-name').textContent = sp.name;
-  const msgs = document.getElementById('messages');
-  msgs.innerHTML = `<div class="welcome"><span class="welcome-emoji">${sp.icon}</span><div class="welcome-name">${sp.name}</div><div class="welcome-desc">${sp.desc}</div></div><div class="typing" id="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
-  history[key].forEach(m => addBubble(m.role, m.content, false));
-  document.getElementById('suggestions').innerHTML = sp.suggestions.map(s=>`<div class="chip" onclick="useSuggestion('${s}')">${s}</div>`).join('');
+  current=key;
+  if(!chatHistory[key])chatHistory[key]=[];
+  var sp=specialists[key];
+  document.getElementById('chat-icon').textContent=sp.icon;
+  document.getElementById('chat-icon').style.background=sp.color;
+  document.getElementById('chat-name').textContent=sp.name;
+  var msgs=document.getElementById('messages');
+  msgs.innerHTML='<div class="welcome"><span class="welcome-emoji">'+sp.icon+'</span><div class="welcome-name">'+sp.name+'</div><div class="welcome-desc">'+sp.desc+'</div></div><div class="typing" id="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  chatHistory[key].forEach(function(m){addBubble(m.role,m.displayText,m.imgSrc,false);});
+  document.getElementById('suggestions').innerHTML=sp.suggestions.map(function(s){return '<div class="chip" onclick="useSuggestion(\''+s+'\')">'+s+'</div>';}).join('');
+  removePhoto();
   document.getElementById('home').classList.remove('active');
   document.getElementById('chat').classList.add('active');
   document.getElementById('msg-input').focus();
 }
-
 function goHome(){
   document.getElementById('chat').classList.remove('active');
   document.getElementById('home').classList.add('active');
 }
 
-function addBubble(role, text, scroll=true){
-  const typing = document.getElementById('typing');
-  const msgs = document.getElementById('messages');
-  const div = document.createElement('div');
-  div.className = `msg ${role}`;
-  const time = new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
-  div.innerHTML = `<div class="bubble">${text.replace(/\n/g,'<br>')}</div><div class="msg-time">${time}</div>`;
-  msgs.insertBefore(div, typing);
-  if(scroll) msgs.scrollTop = msgs.scrollHeight;
+function addBubble(role,text,imgSrc,scroll){
+  if(scroll===undefined)scroll=true;
+  var typing=document.getElementById('typing');
+  var msgs=document.getElementById('messages');
+  var div=document.createElement('div');
+  div.className='msg '+role;
+  var time=new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+  var content='';
+  if(imgSrc)content+='<img src="'+imgSrc+'" alt="foto">';
+  if(text)content+=text.replace(/\n/g,'<br>');
+  div.innerHTML='<div class="bubble">'+content+'</div><div class="msg-time">'+time+'</div>';
+  msgs.insertBefore(div,typing);
+  if(scroll)msgs.scrollTop=msgs.scrollHeight;
 }
+function useSuggestion(text){document.getElementById('msg-input').value=text;sendMsg();}
 
-function useSuggestion(text){
-  document.getElementById('msg-input').value = text;
-  sendMsg();
-}
-
-function callAPI(payload, onSuccess, onError){
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST','https://api.anthropic.com/v1/messages', true);
+function callAPI(payload,onSuccess,onError){
+  var xhr=new XMLHttpRequest();
+  xhr.open('POST','https://api.anthropic.com/v1/messages',true);
   xhr.setRequestHeader('Content-Type','application/json');
-  xhr.setRequestHeader('x-api-key', apiKey);
+  xhr.setRequestHeader('x-api-key',apiKey);
   xhr.setRequestHeader('anthropic-version','2023-06-01');
   xhr.setRequestHeader('anthropic-dangerous-direct-browser-access','true');
-  xhr.onreadystatechange = function(){
-    if(xhr.readyState !== 4) return;
+  xhr.onreadystatechange=function(){
+    if(xhr.readyState!==4)return;
     try{
-      var data = JSON.parse(xhr.responseText);
-      if(xhr.status === 200){
-        onSuccess(data);
-      } else {
-        var msg = (data.error && data.error.message) ? data.error.message : 'Errore '+xhr.status;
-        onError(msg);
-      }
-    } catch(e){ onError('Risposta non valida dal server.'); }
+      var data=JSON.parse(xhr.responseText);
+      if(xhr.status===200){onSuccess(data);}
+      else{onError((data.error&&data.error.message)?data.error.message:'Errore '+xhr.status);}
+    }catch(e){onError('Risposta non valida dal server.');}
   };
-  xhr.onerror = function(){ onError('Errore di rete. Controlla la connessione.'); };
+  xhr.onerror=function(){onError('Errore di rete. Controlla la connessione.');};
   xhr.send(JSON.stringify(payload));
 }
 
 function sendMsg(){
-  var input = document.getElementById('msg-input');
-  var text = input.value.trim();
-  if(!text || loading) return;
-  input.value = '';
-  input.style.height = 'auto';
-  var sp = specialists[current];
-  history[current].push({role:'user',content:text});
-  addBubble('user', text);
-  loading = true;
-  document.getElementById('send-btn').disabled = true;
-  var typing = document.getElementById('typing');
+  var input=document.getElementById('msg-input');
+  var text=input.value.trim();
+  var hasPhoto=!!pendingPhoto;
+  if((!text&&!hasPhoto)||loading)return;
+  input.value='';input.style.height='auto';
+
+  var sp=specialists[current];
+  var displayText=text||(hasPhoto?'Analizza questa foto per favore.':'');
+  var imgSrc=hasPhoto?pendingPhoto.dataUrl:null;
+
+  // Build API content
+  var userContent;
+  if(hasPhoto){
+    var parts=[{type:'image',source:{type:'base64',media_type:pendingPhoto.mime,data:pendingPhoto.base64}}];
+    parts.push({type:'text',text:text||'Analizza questa foto per favore.'});
+    userContent=parts;
+  } else {
+    userContent=text;
+  }
+
+  chatHistory[current].push({role:'user',content:userContent,displayText:displayText,imgSrc:imgSrc});
+  addBubble('user',displayText,imgSrc);
+  removePhoto();
+
+  loading=true;
+  document.getElementById('send-btn').disabled=true;
+  var typing=document.getElementById('typing');
   typing.classList.add('show');
-  document.getElementById('messages').scrollTop = 99999;
+  document.getElementById('messages').scrollTop=99999;
+
+  var apiMessages=chatHistory[current].map(function(m){return{role:m.role,content:m.content};});
 
   callAPI({
     model:'claude-sonnet-4-20250514',
-    max_tokens:1000,
-    system: sp.system,
-    messages: history[current]
-  }, function(data){
-    var reply = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : 'Mi dispiace, riprova tra poco.';
-    history[current].push({role:'assistant',content:reply});
+    max_tokens:1200,
+    system:sp.system,
+    messages:apiMessages
+  },function(data){
+    var reply=(data.content&&data.content[0]&&data.content[0].text)?data.content[0].text:'Mi dispiace, riprova tra poco.';
+    chatHistory[current].push({role:'assistant',content:reply,displayText:reply,imgSrc:null});
     typing.classList.remove('show');
-    addBubble('assistant', reply);
-    loading = false;
-    document.getElementById('send-btn').disabled = false;
-  }, function(errMsg){
+    addBubble('assistant',reply,null);
+    loading=false;
+    document.getElementById('send-btn').disabled=false;
+  },function(errMsg){
     typing.classList.remove('show');
-    addBubble('assistant', 'Ops: ' + errMsg + ' 🌿');
-    loading = false;
-    document.getElementById('send-btn').disabled = false;
+    addBubble('assistant','Ops: '+errMsg+' Riprova!',null);
+    loading=false;
+    document.getElementById('send-btn').disabled=false;
   });
 }
 
-const inp = document.getElementById('msg-input');
-inp.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'});
-inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
+var inp=document.getElementById('msg-input');
+inp.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px';});
+inp.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}});
 </script>
 </body>
 </html>
