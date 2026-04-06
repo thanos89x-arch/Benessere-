@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Il Mio Benessere</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-height:100vh;overflow-x:hidden}
@@ -77,9 +76,6 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
 .chat-status{font-size:11px;color:#7D9B76;font-weight:500;display:flex;align-items:center;gap:5px;margin-top:2px}
 .status-dot{width:6px;height:6px;background:#7D9B76;border-radius:50%;display:inline-block}
 
-/* PDF button in header */
-.pdf-btn{width:38px;height:38px;border-radius:50%;background:#F5EFE6;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:background .15s;opacity:.7}
-.pdf-btn:active{background:#EBF3E8;opacity:1}
 
 .messages{flex:1;overflow-y:auto;padding:18px 14px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
 .welcome{text-align:center;padding:28px 20px 12px}
@@ -138,6 +134,8 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
 .photo-thumb img{width:64px;height:64px;object-fit:cover;border-radius:12px;border:2px solid #7D9B76;display:block}
 .photo-remove{position:absolute;top:-7px;right:-7px;width:22px;height:22px;border-radius:50%;background:#C0392B;color:white;border:2px solid white;font-size:13px;cursor:pointer;line-height:18px;text-align:center;font-weight:700}
 .photo-label{font-size:12px;color:#7D9B76;font-weight:500}
+.file-thumb{display:none;align-items:center;justify-content:center;width:64px;height:64px;background:#F0F7EE;border-radius:12px;border:2px solid #7D9B76;font-size:30px;position:relative;flex-shrink:0}
+.file-thumb.show{display:flex}
 
 /* INPUT */
 .input-area{padding:8px 14px 28px;background:#FAF7F2;display:flex;gap:10px;align-items:flex-end;flex-shrink:0}
@@ -169,6 +167,19 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
 /* PDF toast */
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:#1C1C1E;color:white;padding:12px 22px;border-radius:50px;font-size:13px;font-weight:500;opacity:0;transition:all .3s;z-index:200;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* HISTORY MODAL */
+.history-sheet{max-height:80vh;overflow-y:auto;padding-bottom:40px}
+.history-specialist{margin-bottom:22px}
+.history-specialist-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:#1C1C1E;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.history-session{background:white;border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;cursor:pointer;border:1.5px solid rgba(125,155,118,.15);transition:background .15s}
+.history-session:active{background:#EBF3E8}
+.history-session-info{flex:1;min-width:0}
+.history-session-date{font-size:10px;color:#8A8A8A;font-weight:500;margin-bottom:3px}
+.history-session-preview{font-size:12.5px;color:#1C1C1E;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:300}
+.history-del-btn{background:#FDECEA;border:none;border-radius:8px;padding:6px 10px;font-size:11px;color:#C0392B;cursor:pointer;flex-shrink:0;font-family:'DM Sans',sans-serif;font-weight:500}
+.history-empty{text-align:center;color:#8A8A8A;font-size:13px;padding:30px 0;font-weight:300}
+.history-delete-all{width:100%;margin-top:16px;background:#FDECEA;border:none;border-radius:14px;padding:13px;font-family:'DM Sans',sans-serif;font-size:13px;color:#C0392B;cursor:pointer;font-weight:500}
 </style>
 </head>
 <body>
@@ -203,6 +214,7 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
     <div class="home-date" id="home-date"></div>
   </div>
   <div class="home-top-actions">
+    <button class="settings-btn" onclick="openHistoryModal()">🕐</button>
     <button class="settings-btn" onclick="openKeyModal()">⚙️</button>
   </div>
   <div class="banner">
@@ -244,6 +256,90 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
       <div class="card-desc">Postura, movimento e dolori</div>
       <div class="card-arrow">›</div>
     </div>
+    <div class="card" style="border-color:rgba(109,76,165,.2)" onclick="openChat('psicologa')">
+      <div class="card-icon" style="background:#EDE9F5">🧠</div>
+      <div class="card-name">Psicologa</div>
+      <div class="card-desc">Benessere mentale ed emozioni</div>
+      <div class="card-arrow">›</div>
+    </div>
+    <div class="card" style="border-color:rgba(33,150,243,.2)" onclick="openChat('dentista')">
+      <div class="card-icon" style="background:#E8F4FD">🦷</div>
+      <div class="card-name">Dentista</div>
+      <div class="card-desc">Salute orale e prevenzione</div>
+      <div class="card-arrow">›</div>
+    </div>
+    <div class="card" style="border-color:rgba(0,188,212,.2)" onclick="openChat('oculista')">
+      <div class="card-icon" style="background:#EAF6FB">👁️</div>
+      <div class="card-name">Oculista</div>
+      <div class="card-desc">Vista e salute degli occhi</div>
+      <div class="card-arrow">›</div>
+    </div>
+    <div class="card" style="border-color:rgba(76,175,80,.2)" onclick="openChat('personaltrainer')">
+      <div class="card-icon" style="background:#E8F5E9">🏋️</div>
+      <div class="card-name">Personal Trainer</div>
+      <div class="card-desc">Allenamento e obiettivi fitness</div>
+      <div class="card-arrow">›</div>
+    </div>
+    <div class="card" style="border-color:rgba(109,76,165,.2)" onclick="openChat('sonnologa')">
+      <div class="card-icon" style="background:#EDE9F5">💤</div>
+      <div class="card-name">Specialista del Sonno</div>
+      <div class="card-desc">Insonnia e qualità del riposo</div>
+      <div class="card-arrow">›</div>
+    </div>
+    <div class="card" style="border-color:rgba(76,175,80,.2)" onclick="openChat('erborista')">
+      <div class="card-icon" style="background:#E8F5E9">🌿</div>
+      <div class="card-name">Erborista</div>
+      <div class="card-desc">Rimedi naturali e piante officinali</div>
+      <div class="card-arrow">›</div>
+    </div>
+    <div class="card" style="border-color:rgba(229,57,53,.2)" onclick="openChat('cardiologa')">
+      <div class="card-icon" style="background:#FDECEA">🫀</div>
+      <div class="card-name">Cardiologa</div>
+      <div class="card-desc">Salute del cuore e prevenzione</div>
+      <div class="card-arrow">›</div>
+    </div>
+    <div class="card" style="border-color:rgba(255,193,7,.25)" onclick="openChat('osteopata')">
+      <div class="card-icon" style="background:#FFF8E1">🦴</div>
+      <div class="card-name">Osteopata</div>
+      <div class="card-desc">Dolori muscolari e postura</div>
+      <div class="card-arrow">›</div>
+    </div>
+    <div class="card" style="border-color:rgba(33,150,243,.2)" onclick="openChat('farmacista')">
+      <div class="card-icon" style="background:#E3F2FD">💊</div>
+      <div class="card-name">Farmacista</div>
+      <div class="card-desc">Farmaci, integratori e consigli</div>
+      <div class="card-arrow">›</div>
+    </div>
+    <div class="card" style="border-color:rgba(156,39,176,.2)" onclick="openChat('mindfulness')">
+      <div class="card-icon" style="background:#F3E5F5">🧘</div>
+      <div class="card-name">Coach Mindfulness</div>
+      <div class="card-desc">Meditazione e respirazione</div>
+      <div class="card-arrow">›</div>
+    </div>
+    <div class="card" style="border-color:rgba(233,30,99,.2)" onclick="openChat('ginecologa')">
+      <div class="card-icon" style="background:#FCE4EC">👶</div>
+      <div class="card-name">Ginecologa</div>
+      <div class="card-desc">Salute femminile e ormoni</div>
+      <div class="card-arrow">›</div>
+    </div>
+    <div class="card" style="border-color:rgba(63,81,181,.2)" onclick="openChat('medicobase')">
+      <div class="card-icon" style="background:#E8EAF6">🩺</div>
+      <div class="card-name">Medico di Base</div>
+      <div class="card-desc">Salute generale e prevenzione</div>
+      <div class="card-arrow">›</div>
+    </div>
+    <div class="card" style="border-color:rgba(33,150,243,.2)" onclick="openChat('pulizia')">
+      <div class="card-icon" style="background:#E3F2FD">🧹</div>
+      <div class="card-name">Esperto Pulizia Casa</div>
+      <div class="card-desc">Prodotti, chimica e tecniche per una casa pulita</div>
+      <div class="card-arrow">›</div>
+    </div>
+    <div class="card" style="border-color:rgba(233,30,99,.2)" onclick="openChat('olistico')">
+      <div class="card-icon" style="background:#FCE4EC">🌸</div>
+      <div class="card-name">Specialista Olistica</div>
+      <div class="card-desc">Tecniche olistiche, integratori e benessere 360°</div>
+      <div class="card-arrow">›</div>
+    </div>
   </div>
 </div>
 
@@ -256,7 +352,6 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
       <div class="chat-name" id="chat-name"></div>
       <div class="chat-status"><span class="status-dot"></span>Disponibile ora</div>
     </div>
-    <button class="pdf-btn" onclick="downloadPDF()" title="Scarica PDF">📄</button>
     <button class="settings-btn" onclick="openKeyModal()">⚙️</button>
   </div>
   <div class="messages" id="messages">
@@ -266,16 +361,14 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
   </div>
   <div class="suggestions" id="suggestions"></div>
   <div class="photo-preview-bar" id="photo-preview-bar">
-    <div class="photo-thumb">
-      <img id="photo-preview-img" src="" alt="anteprima">
-      <button class="photo-remove" onclick="removePhoto()">x</button>
-    </div>
-    <span class="photo-label">Foto pronta da inviare</span>
+    <div id="attachments-container" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"></div>
   </div>
   <div class="input-area">
-    <input type="file" id="photo-gallery" accept="image/*" style="display:none" onchange="handlePhoto(event)">
-    <input type="file" id="photo-camera" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(event)">
+    <input type="file" id="photo-gallery" accept="image/*" multiple style="display:none" onchange="handlePhoto(event)">
+    <input type="file" id="photo-camera" accept="image/*" capture="environment" multiple style="display:none" onchange="handlePhoto(event)">
+    <input type="file" id="file-attach" accept=".pdf,.txt,.csv,.docx,image/*" multiple style="display:none" onchange="handleFileAttach(event)">
     <button class="photo-btn" onclick="openPhotoModal()">📷</button>
+    <button class="photo-btn" onclick="document.getElementById('file-attach').click()">📎</button>
     <div class="input-wrap">
       <textarea id="msg-input" rows="1" placeholder="Scrivi un messaggio..."></textarea>
     </div>
@@ -327,14 +420,29 @@ body{font-family:'DM Sans',sans-serif;background:#FAF7F2;color:#1C1C1E;min-heigh
   </div>
 </div>
 
+<!-- HISTORY MODAL -->
+<div class="modal-overlay" id="history-modal" onclick="closeHistoryModal(event)">
+  <div class="modal-sheet history-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Storico conversazioni</div>
+    <div class="modal-sub">Le tue ultime sessioni con le specialiste.</div>
+    <div id="history-content"></div>
+    <button class="history-delete-all" id="history-delete-all-btn" onclick="deleteAllHistory()" style="display:none">🗑 Elimina tutto lo storico</button>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
 var STORAGE_KEY = 'benessere_api_key';
+var HISTORY_KEY = 'benessere_history';
+var sessionIds = {}; // session ID corrente per ogni specialista
 
 // ── System prompts con istruzioni markdown + fonti ──────────────────────────
 var BASE_SYSTEM_SUFFIX = `
+
+LINGUA: Rileva automaticamente la lingua usata dall'utente (testo scritto, contenuto di documenti, testo visibile nelle foto) e rispondi SEMPRE nella stessa lingua. Se l'utente cambia lingua, cambia anche tu. Non forzare mai l'italiano.
 
 FORMATTAZIONE OBBLIGATORIA:
 - Usa ** per il grassetto attorno ai termini importanti
@@ -343,44 +451,135 @@ FORMATTAZIONE OBBLIGATORIA:
 - Organizza risposte lunghe con brevi intestazioni seguite da ":"
 - Mantieni le risposte leggibili e ben strutturate
 
-FONTI:
-Quando fornisci informazioni scientifiche o mediche, aggiungi SEMPRE alla fine della risposta una sezione "FONTI:" con 2-4 riferimenti attendibili nel formato:
-FONTI:
-- [Nome fonte] | URL o descrizione breve
-- [Nome fonte] | URL o descrizione breve
+PDF/RIASSUNTO: Se l'utente chiede un riassunto, un PDF, o un riepilogo della conversazione, rispondi con un riassunto strutturato della chat e termina il messaggio con questa stringa esatta su una riga sola: [DOWNLOAD_PDF]
 
-Usa fonti come: PubMed, ISS (Istituto Superiore di Sanità), SINU (Società Italiana di Nutrizione Umana), LARN, Ministero della Salute, Mayo Clinic, WHO, Harvard Health, Humanitas Research Hospital, AIRC, SIDeMaST, ecc.`;
+FONTI:
+Quando fornisci informazioni scientifiche o mediche aggiungi SEMPRE alla fine una sezione FONTI: con 2-4 riferimenti nel formato:
+
+FONTI:
+- Nome fonte | https://url-completo-e-reale.it
+- Nome fonte | https://url-completo-e-reale.it
+
+IMPORTANTE:
+- Usa SEMPRE URL reali e verificabili, mai URL inventati
+- Preferisci: pubmed.ncbi.nlm.nih.gov, iss.it, salute.gov.it, humanitas.it, mayoclinic.org, who.int, epicentro.iss.it, fondazioneveronesi.it, airc.it, my-personaltrainer.it
+- Se non hai un URL certo per una fonte, non metterla
+- Quando l'utente chiede "mandami il link" o "dimmi la fonte" rispondi SOLO con il link diretto nella forma: Ecco il link diretto: https://url-completo`;
 
 var specialists = {
   nutrizionista:{
     name:"Nutrizionista",icon:"🥗",color:"#EBF3E8",
     desc:"Sono qui per guidarti verso una nutrizione equilibrata e uno stile di vita sano.",
-    system:"Sei una nutrizionista gentile, professionale e competente. Parli in italiano. Dai consigli pratici su alimentazione, nutrienti, energia e abitudini sane. Se l'utente invia una foto di cibo o pasti, analizzane il valore nutritivo e dai consigli personalizzati."+BASE_SYSTEM_SUFFIX,
+    system:"Sei una nutrizionista gentile, professionale e competente. Dai consigli pratici su alimentazione, nutrienti, energia e abitudini sane. Se l'utente invia una foto di cibo o pasti, analizzane il valore nutritivo e dai consigli personalizzati."+BASE_SYSTEM_SUFFIX,
     suggestions:["Cosa mangiare a colazione?","Cibi anti-infiammatori","Come aumentare energia?","Quante proteine al giorno?"]
   },
   dietologo:{
     name:"Dietologa",icon:"⚖️",color:"#F9F1E3",
     desc:"Creo piani alimentari personalizzati per raggiungere i tuoi obiettivi in modo sano.",
-    system:"Sei una dietologa esperta e comprensiva. Parli in italiano. Fornisci consigli su diete, calorie, macronutrienti e piani alimentari personalizzati. Se l'utente invia una foto di un pasto, stima calorie e macronutrienti e dai consigli."+BASE_SYSTEM_SUFFIX,
+    system:"Sei una dietologa esperta e comprensiva. Fornisci consigli su diete, calorie, macronutrienti e piani alimentari personalizzati. Se l'utente invia una foto di un pasto, stima calorie e macronutrienti e dai consigli."+BASE_SYSTEM_SUFFIX,
     suggestions:["Piano settimanale leggero","Snack sani e gustosi","Come gestire i dolci?","Digiuno intermittente?"]
   },
   dermatologo:{
     name:"Dermatologa",icon:"✨",color:"#FBF0EC",
     desc:"Ti aiuto a prenderti cura della tua pelle con routine e consigli mirati.",
-    system:"Sei una dermatologa gentile e aggiornata. Parli in italiano. Dai consigli su skincare, routine, acne, idratazione e protezione solare. Se l'utente invia una foto della pelle, analizza quello che vedi e dai consigli personalizzati, ricordando sempre che per diagnosi definitive serve una visita dal vivo."+BASE_SYSTEM_SUFFIX,
+    system:"Sei una dermatologa gentile e aggiornata. Dai consigli su skincare, routine, acne, idratazione e protezione solare. Se l'utente invia una foto della pelle, analizza quello che vedi e dai consigli personalizzati, ricordando sempre che per diagnosi definitive serve una visita dal vivo."+BASE_SYSTEM_SUFFIX,
     suggestions:["Routine mattutina?","Come combattere l'acne?","Migliore SPF?","Pelle secca rimedi"]
   },
   tricologo:{
     name:"Tricologa",icon:"💆",color:"#F7EAE4",
     desc:"Mi occupo della salute del tuo cuoio capelluto e della bellezza dei tuoi capelli.",
-    system:"Sei una tricologa esperta e premurosa. Parli in italiano. Dai consigli su caduta dei capelli, cuoio capelluto, trattamenti e prodotti. Se l'utente invia una foto dei capelli o del cuoio capelluto, analizza quello che vedi e dai consigli mirati."+BASE_SYSTEM_SUFFIX,
+    system:"Sei una tricologa esperta e premurosa. Dai consigli su caduta dei capelli, cuoio capelluto, trattamenti e prodotti. Se l'utente invia una foto dei capelli o del cuoio capelluto, analizza quello che vedi e dai consigli mirati."+BASE_SYSTEM_SUFFIX,
     suggestions:["Capelli che cadono?","Maschera nutriente fai da te","Shampoo giusto per me?","Come far crescere i capelli?"]
   },
   fisioterapista:{
     name:"Fisioterapista",icon:"🏃",color:"#E8F0E7",
     desc:"Ti guido per migliorare postura, movimento e ritrovare il benessere fisico.",
-    system:"Sei una fisioterapista esperta e motivante. Parli in italiano. Dai consigli su esercizi, postura, stretching e dolori muscolari. Se l'utente invia una foto della postura o di un'area dolorante, analizza quello che vedi e suggerisci miglioramenti concreti."+BASE_SYSTEM_SUFFIX,
+    system:"Sei una fisioterapista esperta e motivante. Dai consigli su esercizi, postura, stretching e dolori muscolari. Se l'utente invia una foto della postura o di un'area dolorante, analizza quello che vedi e suggerisci miglioramenti concreti."+BASE_SYSTEM_SUFFIX,
     suggestions:["Mal di schiena aiuto!","Stretching mattutino","Postura al computer?","Esercizi per le spalle"]
+  },
+  psicologa:{
+    name:"Psicologa",icon:"🧠",color:"#EDE9F5",
+    desc:"Ti supporto nel benessere mentale, gestione delle emozioni e crescita personale.",
+    system:"Sei una psicologa empatica, professionale e aggiornata. Offri supporto emotivo, tecniche di gestione dello stress, ansia e umore. Non fai diagnosi cliniche ma dai strumenti pratici di benessere mentale. Se la situazione richiede un professionista dal vivo lo suggerisci sempre con delicatezza."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Mi sento ansiosa ultimamente","Come gestire lo stress?","Tecniche di rilassamento","Come migliorare l'umore?"]
+  },
+  dentista:{
+    name:"Dentista",icon:"🦷",color:"#E8F4FD",
+    desc:"Consigli per la salute orale, igiene dentale e prevenzione.",
+    system:"Sei una dentista gentile e professionale. Dai consigli su igiene orale, prevenzione, sbiancamento, sensibilità dentale e gengive. Per diagnosi e trattamenti ricordi sempre di visitare un dentista dal vivo."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Denti sensibili rimedi","Come sbiancare i denti?","Igiene orale perfetta","Gengiviti cause e cura"]
+  },
+  oculista:{
+    name:"Oculista",icon:"👁️",color:"#EAF6FB",
+    desc:"Salute degli occhi, vista e prevenzione dei disturbi visivi.",
+    system:"Sei un'oculista esperta e precisa. Dai consigli su affaticamento visivo, secchezza oculare, prevenzione e salute degli occhi. Per diagnosi o prescrizioni ricordi sempre di visitare uno specialista dal vivo."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Occhi stanchi rimedi","Esercizi per la vista","Occhi secchi cosa fare?","Quanto spesso visitare l'oculista?"]
+  },
+  personaltrainer:{
+    name:"Personal Trainer",icon:"🏋️",color:"#E8F5E9",
+    desc:"Allenamento su misura, motivazione e obiettivi fitness.",
+    system:"Sei una personal trainer motivante ed esperta. Crei schede di allenamento personalizzate, dai consigli su esercizi, recupero muscolare e progressione. Se l'utente invia una foto della postura o di un esercizio, analizza e correggi."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Scheda allenamento a casa","Come perdere peso?","Esercizi per addominali","Quante volte allenarsi?"]
+  },
+  sonnologa:{
+    name:"Specialista del Sonno",icon:"💤",color:"#EDE9F5",
+    desc:"Migliora la qualità del sonno e combatti insonnia e stanchezza.",
+    system:"Sei una specialista del sonno preparata e premurosa. Dai consigli su igiene del sonno, routine serali, insonnia, jet lag e qualità del riposo. Suggerisci tecniche evidence-based come la sleep hygiene e la CBT-I."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Non riesco a dormire","Routine serale ideale","Quante ore dormire?","Rimedi per l'insonnia"]
+  },
+  erborista:{
+    name:"Erborista",icon:"🌿",color:"#E8F5E9",
+    desc:"Rimedi naturali, piante officinali e medicina complementare.",
+    system:"Sei un'erborista esperta e appassionata. Dai consigli su piante officinali, tisane, rimedi naturali e integratori. Ricordi sempre che i rimedi naturali non sostituiscono le terapie mediche e suggerisci di consultare un medico per condizioni serie."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Tisana per dormire meglio","Rimedi naturali per stress","Piante per digestione","Integratori naturali utili"]
+  },
+  cardiologa:{
+    name:"Cardiologa",icon:"🫀",color:"#FDECEA",
+    desc:"Salute del cuore, prevenzione cardiovascolare e stile di vita.",
+    system:"Sei una cardiologa seria e aggiornata. Dai consigli su prevenzione cardiovascolare, stile di vita sano per il cuore, pressione sanguigna e colesterolo. Per sintomi acuti o diagnosi ricordi sempre di rivolgersi immediatamente a un medico."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Come abbassare il colesterolo?","Pressione alta rimedi","Sport e cuore","Prevenzione cardiovascolare"]
+  },
+  osteopata:{
+    name:"Osteopata",icon:"🦴",color:"#FFF8E1",
+    desc:"Benessere muscolo-scheletrico, dolori e riequilibrio posturale.",
+    system:"Sei un'osteopata esperta e attenta. Dai consigli su dolori muscolari, postura, mal di testa tensivi, articolazioni e tecniche di automassaggio. Se l'utente invia una foto posturale, analizzala e suggerisci correzioni."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Mal di collo rimedi","Automassaggio schiena","Postura corretta seduta","Cefalea tensiva cosa fare?"]
+  },
+  farmacista:{
+    name:"Farmacista",icon:"💊",color:"#E3F2FD",
+    desc:"Farmaci, integratori, interazioni e consigli sull'automedicazione.",
+    system:"Sei una farmacista competente e affidabile. Dai consigli su farmaci da banco, integratori, interazioni farmacologiche e uso corretto dei medicinali. Non prescivi farmaci soggetti a ricetta ma orienti sempre verso il medico quando necessario."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Antidolorifico migliore?","Integratori per stanchezza","Come leggere un bugiardino?","Vitamina D quando prenderla?"]
+  },
+  mindfulness:{
+    name:"Coach Mindfulness",icon:"🧘",color:"#F3E5F5",
+    desc:"Meditazione, respirazione e presenza mentale per il benessere.",
+    system:"Sei una coach di mindfulness e meditazione serena e ispiratrice. Guidi pratiche di respirazione, meditazione guidata, body scan e tecniche di presenza. Adatti gli esercizi al livello e al tempo disponibile dell'utente."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Meditazione per principianti","Esercizio di respirazione","Come iniziare con la mindfulness?","Tecnica 4-7-8 respirazione"]
+  },
+  ginecologa:{
+    name:"Ginecologa",icon:"👶",color:"#FCE4EC",
+    desc:"Salute femminile, ciclo, ormoni e benessere ginecologico.",
+    system:"Sei una ginecologa empatica, discreta e professionale. Dai consigli su ciclo mestruale, salute ormonale, contraccezione, menopausa e benessere ginecologico. Per sintomi specifici o diagnosi ricordi sempre di visitare una specialista dal vivo."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Ciclo irregolare cause","Dolori mestruali rimedi","Salute ormonale femminile","Menopausa sintomi e consigli"]
+  },
+  medicobase:{
+    name:"Medico di Base",icon:"🩺",color:"#E8EAF6",
+    desc:"Consigli generali di salute, prevenzione e orientamento medico.",
+    system:"Sei un medico di base preparato, calmo e di fiducia. Dai consigli generali su salute, prevenzione, sintomi comuni e quando è necessario rivolgersi a uno specialista. Non fai diagnosi ma orienti l'utente nel percorso di cura più adatto."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Ho la febbre cosa fare?","Quando andare al pronto soccorso?","Prevenzione e check-up","Raffreddore rimedi naturali"]
+  },
+  pulizia:{
+    name:"Esperto Pulizia Casa",icon:"🧹",color:"#E3F2FD",
+    desc:"Consigli su prodotti, ingredienti chimici e tecniche per una casa pulita e sicura.",
+    system:"Sei un esperto di pulizia domestica con solide basi di chimica. Conosci le proprietà dei detergenti, disinfettanti, sgrassatori e prodotti naturali. Sai quali prodotti NON mischiare mai (es. candeggina + aceto), come rimuovere ogni tipo di macchia, come igienizzare ambienti in modo sicuro, e quali prodotti eco-friendly sono davvero efficaci. Se l'utente invia una foto di una superficie, macchia o prodotto, analizza e consiglia."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Come rimuovere il calcare?","Prodotti da non mescolare mai","Pulizia naturale del bagno","Come igienizzare cucina?"]
+  },
+  olistico:{
+    name:"Specialista Olistica",icon:"🌸",color:"#FCE4EC",
+    desc:"Tecniche olistiche, integratori naturali e benessere a 360 gradi.",
+    system:"Sei una specialista olistica esperta e appassionata. Conosci l'ayurveda, la medicina tradizionale cinese, la naturopatia, la cristalloterapia, l'aromaterapia, la riflessologia e le tecniche energetiche. Suggerisci integratori naturali, oli essenziali, pratiche di riequilibrio e stili di vita olistici. Ricordi sempre che le tecniche olistiche affiancano ma non sostituiscono le cure mediche convenzionali."+BASE_SYSTEM_SUFFIX,
+    suggestions:["Oli essenziali per lo stress","Ayurveda: il mio tipo?","Integratori per l'energia","Tecniche di riequilibrio energetico"]
   }
 };
 
@@ -388,7 +587,7 @@ var current = null;
 var chatHistory = {};
 var loading = false;
 var apiKey = '';
-var pendingPhoto = null;
+var pendingAttachments = [];
 
 (function init(){
   var saved = localStorage.getItem(STORAGE_KEY);
@@ -424,24 +623,82 @@ function closePhotoModal(e){if(!e||e.target===document.getElementById('photo-mod
 function chooseCamera(){document.getElementById('photo-modal').classList.remove('show');document.getElementById('photo-camera').click();}
 function chooseGallery(){document.getElementById('photo-modal').classList.remove('show');document.getElementById('photo-gallery').click();}
 
-function handlePhoto(event){
-  var file=event.target.files[0];event.target.value='';
-  if(!file)return;
-  var mime=file.type||'image/jpeg';
-  var reader=new FileReader();
-  reader.onload=function(e){
-    var dataUrl=e.target.result;
-    pendingPhoto={base64:dataUrl.split(',')[1],mime:mime,dataUrl:dataUrl};
-    document.getElementById('photo-preview-img').src=dataUrl;
-    document.getElementById('photo-preview-bar').classList.add('show');
-  };
-  reader.readAsDataURL(file);
+function renderAttachmentPreviews(){
+  var bar=document.getElementById('photo-preview-bar');
+  var container=document.getElementById('attachments-container');
+  if(pendingAttachments.length===0){bar.classList.remove('show');container.innerHTML='';return;}
+  bar.classList.add('show');
+  container.innerHTML=pendingAttachments.map(function(att,idx){
+    if(att.type==='image'){
+      return '<div class="photo-thumb"><img src="'+att.dataUrl+'" alt="anteprima"><button class="photo-remove" onclick="removeAttachment('+idx+')">✕</button></div>';
+    }
+    var icon=att.type==='pdf'?'📄':'📝';
+    return '<div class="file-thumb show" style="position:relative"><span>'+icon+'</span><button class="photo-remove" onclick="removeAttachment('+idx+')">✕</button></div>';
+  }).join('');
 }
-function removePhoto(){pendingPhoto=null;document.getElementById('photo-preview-img').src='';document.getElementById('photo-preview-bar').classList.remove('show');}
+function removeAttachment(idx){
+  pendingAttachments.splice(idx,1);
+  renderAttachmentPreviews();
+}
+function handlePhoto(event){
+  var files=Array.from(event.target.files);event.target.value='';
+  if(!files.length)return;
+  files.forEach(function(file){
+    var mime=file.type||'image/jpeg';
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var dataUrl=e.target.result;
+      pendingAttachments.push({type:'image',name:file.name,base64:dataUrl.split(',')[1],mime:mime,dataUrl:dataUrl});
+      renderAttachmentPreviews();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function handleFileAttach(event){
+  var files=Array.from(event.target.files);event.target.value='';
+  if(!files.length)return;
+  files.forEach(function(file){
+    var name=file.name;
+    var ext=name.split('.').pop().toLowerCase();
+    if(file.type.startsWith('image/')){
+      var mime=file.type||'image/jpeg';
+      var reader=new FileReader();
+      reader.onload=function(e){
+        var dataUrl=e.target.result;
+        pendingAttachments.push({type:'image',name:name,base64:dataUrl.split(',')[1],mime:mime,dataUrl:dataUrl});
+        renderAttachmentPreviews();
+      };
+      reader.readAsDataURL(file);
+    } else if(ext==='docx'){
+      showToast('Formato .docx non supportato, converti in PDF');
+    } else if(ext==='pdf'){
+      var reader=new FileReader();
+      reader.onload=function(e){
+        var dataUrl=e.target.result;
+        pendingAttachments.push({type:'pdf',name:name,base64:dataUrl.split(',')[1]});
+        renderAttachmentPreviews();
+      };
+      reader.readAsDataURL(file);
+    } else if(ext==='txt'||ext==='csv'){
+      var reader=new FileReader();
+      reader.onload=function(e){
+        pendingAttachments.push({type:'text',name:name,content:e.target.result});
+        renderAttachmentPreviews();
+      };
+      reader.readAsText(file);
+    } else {
+      showToast('Formato non supportato');
+    }
+  });
+}
 
 function openChat(key){
   current=key;
   if(!chatHistory[key])chatHistory[key]=[];
+  // Crea nuovo session ID solo se chat vuota (nuova sessione)
+  if(chatHistory[key].length===0){
+    sessionIds[key]='sess-'+Date.now()+'-'+Math.floor(Math.random()*10000);
+  }
   var sp=specialists[key];
   document.getElementById('chat-icon').textContent=sp.icon;
   document.getElementById('chat-icon').style.background=sp.color;
@@ -450,7 +707,7 @@ function openChat(key){
   msgs.innerHTML='<div class="welcome"><span class="welcome-emoji">'+sp.icon+'</span><div class="welcome-name">'+sp.name+'</div><div class="welcome-desc">'+sp.desc+'</div></div><div class="typing" id="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
   chatHistory[key].forEach(function(m){addBubble(m.role,m.displayText,m.imgSrc,false);});
   document.getElementById('suggestions').innerHTML=sp.suggestions.map(function(s){return '<div class="chip" onclick="useSuggestion(\''+s.replace(/'/g,"\\'")+'\'">'+s+'</div>';}).join('');
-  removePhoto();
+  pendingAttachments=[];renderAttachmentPreviews();
   document.getElementById('home').classList.remove('active');
   document.getElementById('chat').classList.add('active');
   document.getElementById('msg-input').focus();
@@ -542,6 +799,7 @@ function addBubble(role,text,imgSrc,scroll){
   div.innerHTML='<div class="bubble">'+content+'</div><div class="msg-time">'+time+'</div>';
   msgs.insertBefore(div,typing);
   if(scroll)msgs.scrollTop=msgs.scrollHeight;
+  return div;
 }
 
 function useSuggestion(text){document.getElementById('msg-input').value=text;sendMsg();}
@@ -570,21 +828,35 @@ function callAPI(payload,onSuccess,onError){
 function sendMsg(){
   var input=document.getElementById('msg-input');
   var text=input.value.trim();
-  var hasPhoto=!!pendingPhoto;
-  if((!text&&!hasPhoto)||loading)return;
+  var hasAttachments=pendingAttachments.length>0;
+  if((!text&&!hasAttachments)||loading)return;
   input.value='';input.style.height='auto';
   var sp=specialists[current];
-  var displayText=text||(hasPhoto?'Analizza questa foto per favore.':'');
-  var imgSrc=hasPhoto?pendingPhoto.dataUrl:null;
-  var userContent;
-  if(hasPhoto){
-    var parts=[{type:'image',source:{type:'base64',media_type:pendingPhoto.mime,data:pendingPhoto.base64}}];
-    parts.push({type:'text',text:text||'Analizza questa foto per favore.'});
+  var displayText,imgSrc,userContent;
+  if(hasAttachments){
+    var parts=[];
+    var firstImgSrc=null;
+    pendingAttachments.forEach(function(att){
+      if(att.type==='image'){
+        parts.push({type:'image',source:{type:'base64',media_type:att.mime,data:att.base64}});
+        if(!firstImgSrc)firstImgSrc=att.dataUrl;
+      } else if(att.type==='pdf'){
+        parts.push({type:'document',source:{type:'base64',media_type:'application/pdf',data:att.base64}});
+      } else if(att.type==='text'){
+        parts.push({type:'text',text:'Contenuto del file '+att.name+':\n'+att.content});
+      }
+    });
+    var defaultMsg=pendingAttachments.length===1&&pendingAttachments[0].type==='image'?'Analizza questa foto per favore.':'Analizza questi allegati per favore.';
+    parts.push({type:'text',text:text||defaultMsg});
+    displayText=text||defaultMsg;
+    imgSrc=firstImgSrc;
     userContent=parts;
-  } else {userContent=text;}
+  } else {
+    displayText=text;imgSrc=null;userContent=text;
+  }
   chatHistory[current].push({role:'user',content:userContent,displayText:displayText,imgSrc:imgSrc});
   addBubble('user',displayText,imgSrc);
-  removePhoto();
+  pendingAttachments=[];renderAttachmentPreviews();
   loading=true;
   document.getElementById('send-btn').disabled=true;
   var typing=document.getElementById('typing');
@@ -598,9 +870,27 @@ function sendMsg(){
     messages:apiMessages
   },function(data){
     var reply=(data.content&&data.content[0]&&data.content[0].text)?data.content[0].text:'Mi dispiace, riprova tra poco.';
-    chatHistory[current].push({role:'assistant',content:reply,displayText:reply,imgSrc:null});
+    var hasPDF=reply.indexOf('[DOWNLOAD_PDF]')!==-1;
+    var displayReply=hasPDF?reply.replace('[DOWNLOAD_PDF]','').trim():reply;
+    chatHistory[current].push({role:'assistant',content:displayReply,displayText:displayReply,imgSrc:null});
     typing.classList.remove('show');
-    addBubble('assistant',reply,null);
+    var msgDiv=addBubble('assistant',displayReply,null);
+    if(hasPDF){
+      var bubble=msgDiv.querySelector('.bubble');
+      if(bubble){
+        var btnWrap=document.createElement('div');
+        btnWrap.style.marginTop='12px';
+        var pdfBtn=document.createElement('button');
+        pdfBtn.style.cssText='background:#4A6B47;color:white;border:none;border-radius:12px;padding:10px 18px;font-size:14px;cursor:pointer;font-family:inherit;font-weight:500;width:100%';
+        pdfBtn.textContent='📄 Scarica il tuo PDF';
+        (function(spSnap,msgsSnap,summarySnap,btnSnap){
+          btnSnap.onclick=function(){downloadPDFWithSummary(spSnap,msgsSnap,summarySnap,btnSnap);};
+        })(sp,chatHistory[current].slice(),displayReply,pdfBtn);
+        btnWrap.appendChild(pdfBtn);
+        bubble.appendChild(btnWrap);
+      }
+    }
+    saveSession(current);
     loading=false;
     document.getElementById('send-btn').disabled=false;
   },function(errMsg){
@@ -618,140 +908,132 @@ function showToast(msg){
   setTimeout(function(){t.classList.remove('show');},3000);
 }
 
-function stripHTML(html){
-  var tmp=document.createElement('div');
-  tmp.innerHTML=html;
-  return tmp.textContent||tmp.innerText||'';
+function downloadPDFWithSummary(sp,msgs,summary,btn){
+  if(btn)btn.disabled=true;
+  showToast('Generazione PDF in corso...');
+  fetch('/genera-pdf',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({specialist:sp,messages:msgs,summary:summary})
+  })
+  .then(function(r){
+    if(!r.ok)return r.json().then(function(e){throw new Error(e.error||'Errore server');});
+    return r.blob();
+  })
+  .then(function(blob){
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download='consulto-'+sp.name.toLowerCase()+'-'+new Date().toISOString().slice(0,10)+'.pdf';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},1000);
+    showToast('📄 PDF salvato!');
+    if(btn)btn.disabled=false;
+  })
+  .catch(function(err){
+    showToast('Errore PDF: '+err.message);
+    if(btn)btn.disabled=false;
+  });
 }
 
-function downloadPDF(){
-  if(!current||!chatHistory[current]||chatHistory[current].length===0){
-    showToast('Nessuna conversazione da esportare');return;
+// ── Storia conversazioni ──────────────────────────────────────────────────────
+function getHistory(){
+  try{return JSON.parse(localStorage.getItem(HISTORY_KEY)||'{}');}catch(e){return {};}
+}
+
+function saveSession(key){
+  if(!chatHistory[key]||chatHistory[key].length===0)return;
+  var id=sessionIds[key];
+  if(!id)return;
+  var history=getHistory();
+  if(!history[key])history[key]={sessions:[]};
+  var firstUser=null;
+  for(var i=0;i<chatHistory[key].length;i++){if(chatHistory[key][i].role==='user'){firstUser=chatHistory[key][i];break;}}
+  var rawPreview=firstUser?(firstUser.displayText||''):'';
+  var preview=rawPreview.length>60?rawPreview.slice(0,60)+'...':rawPreview;
+  var msgs=chatHistory[key].map(function(m){return {role:m.role,displayText:m.displayText||'',imgSrc:null};});
+  var session={id:id,date:new Date().toISOString().slice(0,16),preview:preview,messages:msgs};
+  var sessions=history[key].sessions;
+  var idx=-1;
+  for(var j=0;j<sessions.length;j++){if(sessions[j].id===id){idx=j;break;}}
+  if(idx>=0)sessions[idx]=session;
+  else sessions.unshift(session);
+  if(sessions.length>20)sessions=sessions.slice(0,20);
+  history[key].sessions=sessions;
+  try{localStorage.setItem(HISTORY_KEY,JSON.stringify(history));}catch(e){}
+}
+
+function openHistoryModal(){
+  renderHistory();
+  document.getElementById('history-modal').classList.add('show');
+}
+function closeHistoryModal(e){
+  if(!e||e.target===document.getElementById('history-modal'))
+    document.getElementById('history-modal').classList.remove('show');
+}
+
+function renderHistory(){
+  var history=getHistory();
+  var content=document.getElementById('history-content');
+  var hasAny=false;
+  var html='';
+  var keys=Object.keys(history);
+  for(var k=0;k<keys.length;k++){
+    var key=keys[k];
+    var sp=specialists[key];
+    if(!sp)continue;
+    var sessions=history[key].sessions;
+    if(!sessions||sessions.length===0)continue;
+    hasAny=true;
+    html+='<div class="history-specialist">';
+    html+='<div class="history-specialist-name"><span>'+sp.icon+'</span>'+sp.name+'</div>';
+    var shown=Math.min(sessions.length,5);
+    for(var i=0;i<shown;i++){
+      var s=sessions[i];
+      var dateDisp=s.date?s.date.replace('T',' ').slice(0,16):'';
+      html+='<div class="history-session" onclick="openSessionFromHistory(\''+key+'\',\''+s.id+'\')">';
+      html+='<div class="history-session-info">';
+      html+='<div class="history-session-date">'+dateDisp+'</div>';
+      html+='<div class="history-session-preview">'+(s.preview||'Sessione senza testo')+'</div>';
+      html+='</div>';
+      html+='<button class="history-del-btn" onclick="event.stopPropagation();deleteSession(\''+key+'\',\''+s.id+'\')">Elimina</button>';
+      html+='</div>';
+    }
+    html+='</div>';
   }
-  var sp=specialists[current];
-  var history=chatHistory[current];
+  if(!hasAny){html='<div class="history-empty">Nessuna conversazione salvata ancora.<br>Inizia a chattare con una specialista!</div>';}
+  content.innerHTML=html;
+  document.getElementById('history-delete-all-btn').style.display=hasAny?'block':'none';
+}
 
-  // Build plain-text content for PDF
-  var {jsPDF}=window.jspdf;
-  var doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-  var pageW=210, pageH=297;
-  var margin=18, colW=pageW-margin*2;
-  var y=margin;
-  var lineH=5.5;
+function openSessionFromHistory(key,sessionId){
+  document.getElementById('history-modal').classList.remove('show');
+  var history=getHistory();
+  if(!history[key])return;
+  var session=null;
+  for(var i=0;i<history[key].sessions.length;i++){if(history[key].sessions[i].id===sessionId){session=history[key].sessions[i];break;}}
+  if(!session)return;
+  chatHistory[key]=session.messages.map(function(m){return {role:m.role,displayText:m.displayText||'',imgSrc:null,content:m.displayText||''};});
+  sessionIds[key]=sessionId;
+  openChat(key);
+}
 
-  // ── Header ──
-  doc.setFillColor(74,107,71);
-  doc.rect(0,0,pageW,28,'F');
-  doc.setTextColor(255,255,255);
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(17);
-  doc.text('Il Mio Benessere', margin, 13);
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(10);
-  doc.text('Consulto con '+sp.name+' '+sp.icon.replace(/[^\x00-\x7F]/g,''), margin, 21);
-  var dateStr=new Date().toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  doc.setFontSize(9);
-  doc.text(dateStr, pageW-margin-doc.getTextWidth(dateStr), 21);
-  y=38;
+function deleteSession(key,sessionId){
+  var history=getHistory();
+  if(!history[key])return;
+  history[key].sessions=history[key].sessions.filter(function(s){return s.id!==sessionId;});
+  try{localStorage.setItem(HISTORY_KEY,JSON.stringify(history));}catch(e){}
+  // Se stiamo cancellando la sessione corrente attiva, resetta in memoria
+  if(sessionIds[key]===sessionId){chatHistory[key]=[];delete sessionIds[key];}
+  renderHistory();
+}
 
-  // ── Messages ──
-  history.forEach(function(m,idx){
-    if(m.imgSrc)return; // skip image-only messages in PDF text
-    var isUser=m.role==='user';
-    var rawText=m.displayText||'';
-
-    // Extract sources from text
-    var sourcesText='';
-    var sourcesMatch=rawText.match(/FONTI:\s*\n([\s\S]*?)$/m);
-    if(sourcesMatch){sourcesText=sourcesMatch[0];rawText=rawText.replace(sourcesMatch[0],'').trim();}
-
-    // Speaker label
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(9);
-    if(isUser){
-      doc.setTextColor(74,107,71);
-      doc.text('Tu', margin, y);
-    } else {
-      doc.setTextColor(125,155,118);
-      doc.text(sp.name, margin, y);
-    }
-    y+=lineH*0.8;
-    if(y>pageH-margin){doc.addPage();y=margin;}
-
-    // Message content — wrap lines
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(10);
-    doc.setTextColor(28,28,30);
-
-    var lines=rawText.split('\n');
-    lines.forEach(function(line){
-      // Detect list items
-      var ulM=line.match(/^[-•]\s+(.*)/);
-      var olM=line.match(/^\d+\.\s+(.*)/);
-      var content=line;
-      var prefix='';
-      if(ulM){content=ulM[1];prefix='• ';}
-      else if(olM){content=olM[1];prefix='   ';}
-      // Strip inline markdown
-      content=content.replace(/\*\*(.+?)\*\*/g,'$1').replace(/\*(.+?)\*/g,'$1');
-      if(!content.trim())return;
-      var wrapped=doc.splitTextToSize(prefix+content, colW-(isUser?4:0));
-      wrapped.forEach(function(wl){
-        if(y>pageH-margin){doc.addPage();y=margin;}
-        doc.text(wl, margin+(isUser?0:0), y);
-        y+=lineH;
-      });
-    });
-
-    // Sources section
-    if(sourcesText){
-      y+=2;
-      doc.setFont('helvetica','bold');
-      doc.setFontSize(8.5);
-      doc.setTextColor(74,107,71);
-      if(y>pageH-margin){doc.addPage();y=margin;}
-      doc.text('Fonti:', margin, y);
-      y+=lineH*0.8;
-      doc.setFont('helvetica','normal');
-      doc.setFontSize(8.5);
-      doc.setTextColor(74,107,71);
-      var srcLines=sourcesText.replace('FONTI:','').trim().split('\n');
-      srcLines.filter(function(l){return l.trim().startsWith('-');}).forEach(function(l){
-        var content=l.replace(/^-\s*/,'').trim();
-        var wrapped=doc.splitTextToSize('↗ '+content,colW);
-        wrapped.forEach(function(wl){
-          if(y>pageH-margin){doc.addPage();y=margin;}
-          doc.text(wl,margin,y);
-          y+=lineH;
-        });
-      });
-    }
-
-    // Separator line
-    y+=3;
-    if(idx<history.length-1){
-      doc.setDrawColor(220,220,220);
-      doc.setLineWidth(0.3);
-      if(y<pageH-margin)doc.line(margin,y,pageW-margin,y);
-      y+=4;
-    }
-    if(y>pageH-margin){doc.addPage();y=margin;}
-  });
-
-  // ── Footer ──
-  var totalPages=doc.internal.getNumberOfPages();
-  for(var p=1;p<=totalPages;p++){
-    doc.setPage(p);
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(8);
-    doc.setTextColor(180,180,180);
-    doc.text('Il Mio Benessere — Consulto con '+sp.name+' — Pagina '+p+'/'+totalPages, margin, pageH-8);
-    doc.text('Generato il '+new Date().toLocaleDateString('it-IT'), pageW-margin-45, pageH-8);
-  }
-
-  var fname='consulto-'+sp.name.toLowerCase()+'-'+new Date().toISOString().slice(0,10)+'.pdf';
-  doc.save(fname);
-  showToast('📄 PDF salvato!');
+function deleteAllHistory(){
+  if(!confirm('Eliminare tutto lo storico delle conversazioni?'))return;
+  localStorage.removeItem(HISTORY_KEY);
+  chatHistory={};sessionIds={};
+  renderHistory();
 }
 
 // ── Textarea auto-resize ──────────────────────────────────────────────────────

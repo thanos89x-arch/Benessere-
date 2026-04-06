@@ -7,7 +7,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname)));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'benessere_v2.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
